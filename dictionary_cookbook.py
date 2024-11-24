@@ -1,25 +1,25 @@
-cook_book = {
-    'Омлет': [
-        {'ingredient_name': 'Яйцо', 'quantity': 2, 'measure': 'шт'},
-        {'ingredient_name': 'Молоко', 'quantity': 100, 'measure': 'мл'},
-        {'ingredient_name': 'Помидор', 'quantity': 2, 'measure': 'шт'}
-    ],
-    'Утка по-пекински': [
-        {'ingredient_name': 'Утка', 'quantity': 1, 'measure': 'шт'},
-        {'ingredient_name': 'Вода', 'quantity': 2, 'measure': 'л'},
-        {'ingredient_name': 'Мед', 'quantity': 3, 'measure': 'ст.л'},
-        {'ingredient_name': 'Соевый соус', 'quantity': 60, 'measure': 'мл'}
-    ],
-    'Запеченный картофель': [
-        {'ingredient_name': 'Картофель', 'quantity': 1, 'measure': 'кг'},
-        {'ingredient_name': 'Чеснок', 'quantity': 3, 'measure': 'зубч'},
-        {'ingredient_name': 'Сыр гауда', 'quantity': 100, 'measure': 'г'}
-    ],
-    'Фахитос': [
-        {'ingredient_name': 'Говядина', 'quantity': 500, 'measure': 'г'},
-        {'ingredient_name': 'Перец сладкий', 'quantity': 1, 'measure': 'шт'},
-        {'ingredient_name': 'Лаваш', 'quantity': 2, 'measure': 'шт'},
-        {'ingredient_name': 'Винный уксус', 'quantity': 1, 'measure': 'ст.л'},
-        {'ingredient_name': 'Помидор', 'quantity': 2, 'measure': 'шт'}
-    ]
-}
+def read_cook_book(file_path):
+    cook_book = {}
+    with open(file_path, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        lines = [line.strip() for line in lines]
+        i = 0
+        while i < len(lines):
+            dish_name = lines[i]
+            num_ingredients = int(lines[i + 1])
+            ingredients = []
+            for j in range(num_ingredients):
+                ingredient_line = lines[i + 2 + j].split(' | ')
+                ingredient = {
+                    'ingredient_name': ingredient_line,
+                    'quantity': int(ingredient_line[1]),
+                    'measure': ingredient_line[2]
+                }
+                ingredients.append(ingredient)
+            cook_book[dish_name] = ingredients
+            i += 2 + num_ingredients
+    return cook_book
+
+file_path = 'cook_book.txt'
+cook_book = read_cook_book(file_path)
+print(cook_book)
